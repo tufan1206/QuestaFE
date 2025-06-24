@@ -3,11 +3,23 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+// ✅ Define types
+type Question = {
+  question: string;
+  options: string[];
+  answer: string;
+};
+
+type Quiz = {
+  title: string;
+  questions: Question[];
+};
+
 export default function QuizViewPage() {
   const params = useParams();
   const link = params?.link as string;
 
-  const [quiz, setQuiz] = useState<any>(null);
+  const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: string }>({});
   const [feedback, setFeedback] = useState<{ [key: number]: "correct" | "wrong" | null }>({});
 
@@ -17,7 +29,7 @@ export default function QuizViewPage() {
     const fetchQuiz = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/public/${link}`);
-        const data = await res.json();
+        const data: Quiz = await res.json();
         setQuiz(data);
       } catch (error) {
         console.error("Error fetching quiz:", error);
@@ -30,7 +42,7 @@ export default function QuizViewPage() {
   const handleAnswer = (qIndex: number, selected: string) => {
     setSelectedAnswers((prev) => ({ ...prev, [qIndex]: selected }));
 
-    const isCorrect = quiz.questions[qIndex].answer === selected;
+    const isCorrect = quiz?.questions[qIndex].answer === selected;
     setFeedback((prev) => ({ ...prev, [qIndex]: isCorrect ? "correct" : "wrong" }));
   };
 
@@ -40,13 +52,13 @@ export default function QuizViewPage() {
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-6 text-center">{quiz.title}</h1>
 
-      {quiz.questions.map((q: any, idx: number) => (
+      {quiz.questions.map((q, idx) => (
         <div key={idx} className="mb-8 p-4 border rounded shadow">
           <p className="font-semibold mb-2">
             {idx + 1}. {q.question}
           </p>
           <div className="grid grid-cols-2 gap-2">
-            {q.options.map((opt: string, i: number) => {
+            {q.options.map((opt, i) => {
               const isSelected = selectedAnswers[idx] === opt;
               const result = feedback[idx];
 

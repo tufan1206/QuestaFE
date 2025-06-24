@@ -3,7 +3,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import React, { useState } from 'react'
 
-const page = () => {
+const Page = () => {
 
 const [form, setForm] = useState({ name: "", email: "", password: "" });
 
@@ -51,4 +51,4 @@ const handleSubmit = async (e: { preventDefault: () => void; }) => {
   )
 }
 
-export default page
+export default Page
