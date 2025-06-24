@@ -10,6 +10,7 @@ const Page = () => {
     { question: "", options: ["", "", "", ""], answer: "" },
   ]);
   const [link, setLink] = useState("");
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
   // Authentication check
   useEffect(() => {
@@ -57,7 +58,7 @@ const Page = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("http://localhost:4000/api/products/createQuiz", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/createQuiz`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +70,7 @@ const Page = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setLink(`http://localhost:3000/Quiz/${data.publicLink}`);
+        setLink(`${baseUrl}/Quiz/${data.publicLink}`);
       } else {
         alert(data.message || "Failed to create quiz");
       }

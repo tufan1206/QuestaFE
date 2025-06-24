@@ -16,7 +16,7 @@ export default function QuizViewPage() {
 
     const fetchQuiz = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/products/public/${link}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/public/${link}`);
         const data = await res.json();
         setQuiz(data);
       } catch (error) {

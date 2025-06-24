@@ -8,7 +8,7 @@ const page = () => {
     const router = useRouter();
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/api/products/login', form);
+    const res = await axios.post( `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/login`, form);
     console.log(res);
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("name", res.data.user.name);

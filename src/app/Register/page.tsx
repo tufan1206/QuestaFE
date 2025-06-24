@@ -9,7 +9,7 @@ const [form, setForm] = useState({ name: "", email: "", password: "" });
 
 const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    await axios.post('http://localhost:4000/api/products/register', form);
+    await axios.post( `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/register`, form);
     alert("Registered Successfully!");
   };
   return (
